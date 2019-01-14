@@ -26,8 +26,17 @@ class CinderBackendProvides(RelationBase):
         self.remove_state('{relation_name}.connected')
         conv.set_state('{relation_name}.departing')
 
-    def configure_principal(self, backend_name, configuration):
-        """Send principle cinder-backend information"""
+    def configure_principal(self, backend_name, configuration, stateless=None):
+        """Send principle cinder-backend information.
+
+        :param backend_name: Name of storage backend.
+        :type backend_name: str
+        :param configuration: List of pairs of key value tuples to be used in
+                              backend section of config.
+        :type configuration: [(k1,v1), (k2,v2),...]
+        :param stateless: Whether backend is stateless.
+        :type stateless: bool
+        """
         conv = self.conversation()
 
         subordinate_configuration = {
@@ -39,6 +48,6 @@ class CinderBackendProvides(RelationBase):
                 }
             }
         }
-
-        conv.set_remote(backend_name=backend_name
+        conv.set_remote(backend_name=backend_name,
+                        stateless=stateless,
                         subordinate_configuration=configuration)
