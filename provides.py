@@ -48,6 +48,7 @@ class CinderBackendProvides(RelationBase):
                 }
             }
         }
-        conv.set_remote(backend_name=backend_name,
-                        stateless=stateless,
-                        subordinate_configuration=json.dumps(configuration))
+        conv.set_remote(
+            backend_name=backend_name,
+            stateless=stateless,
+            subordinate_configuration=json.dumps(subordinate_configuration))
