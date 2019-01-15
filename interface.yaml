@@ -1,4 +1,13 @@
 name: cinder-backend
 summary: OpenStack Cinder backend interface
 version: 1
-repo: https://github.com/mskalka/interface-cinder-backend
+repo: https://github.com/openstack-charmers/interface-cinder-backend
+ignore:
+  - 'unit_tests'
+  - 'Makefile'
+  - '.testr.conf'
+  - 'test-requirements.txt'
+  - 'tox.ini'
+  - '.gitignore'
+  - '.gitreview'
+  - '.unit-state.db'
