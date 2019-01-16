@@ -70,7 +70,9 @@ class TestCinderBackendProvides(unittest.TestCase):
         return _mock
 
     def setUp(self):
-        self.cr = provides.CinderBackendProvides('some-relation', [])
+        self.relation_obj = provides.CinderBackendProvides(
+            'some-relation',
+            [])
         self._patches = {}
         self._patches_start = {}
         self.obj = provides
@@ -78,15 +80,15 @@ class TestCinderBackendProvides(unittest.TestCase):
             setattr(self, method, self.patch(method))
 
     def tearDown(self):
-        self.cr = None
+        self.relation_obj = None
         for k, v in self._patches.items():
             v.stop()
             setattr(self, k, None)
         self._patches = None
         self._patches_start = None
 
-    def patch_kr(self, attr, return_value=None):
-        mocked = mock.patch.object(self.cr, attr)
+    def patch_relation_obj(self, attr, return_value=None):
+        mocked = mock.patch.object(self.relation_obj, attr)
         self._patches[attr] = mocked
         started = mocked.start()
         started.return_value = return_value
@@ -95,8 +97,8 @@ class TestCinderBackendProvides(unittest.TestCase):
 
     def test_cinder_backend_joined(self):
         mock_conv = mock.MagicMock()
-        self.patch_kr('conversation', mock_conv)
-        self.cr.cinder_backend_joined()
+        self.patch_relation_obj('conversation', mock_conv)
+        self.relation_obj.cinder_backend_joined()
         expected_calls = [
             mock.call('{relation_name}.joined'),
             mock.call('{relation_name}.connected'),
@@ -105,8 +107,8 @@ class TestCinderBackendProvides(unittest.TestCase):
 
     def test_cinder_backend_departed(self):
         mock_conv = mock.MagicMock()
-        self.patch_kr('conversation', mock_conv)
-        self.cr.cinder_backend_departed()
+        self.patch_relation_obj('conversation', mock_conv)
+        self.relation_obj.cinder_backend_departed()
         expected_calls = [
             mock.call('{relation_name}.joined'),
             mock.call('{relation_name}.available'),
@@ -117,8 +119,8 @@ class TestCinderBackendProvides(unittest.TestCase):
 
     def test_configure_principal(self):
         mock_conv = mock.MagicMock()
-        self.patch_kr('conversation', mock_conv)
-        self.cr.configure_principal(
+        self.patch_relation_obj('conversation', mock_conv)
+        self.relation_obj.configure_principal(
             'cinder-supernas',
             [('cinder', 'ss')],
             True)
